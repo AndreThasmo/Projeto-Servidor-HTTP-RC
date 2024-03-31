@@ -20,6 +20,7 @@ print("+-----------------------------------------------------------------+")
 
 while True:
     client_connection, client_address = server_socket.accept()
+    print(f"Uma conexão com {client_address} foi estabelecida!")
 
     request = client_connection.recv(1024).decode()
     if request:
