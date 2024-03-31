@@ -1,0 +1,30 @@
+@charset "utf-8";
+/* CSS Document */
+
+*{margin:0; padding: 0}
+
+h1 {color:#424242}
+p {color: black}
+
+.icones img{ filter: grayscale(1); margin: 0 10px 0 0; transition: 0.25s; width: 40px;}
+.icones img:hover{filter: grayscale(0); transform: scale(1.1);}
+
+.section1 .card{width: 18rem; background-color: white}
+.section1 .card:hover {transform: scale(1.1);}
+
+.jumbotron{
+	background-image:url(ufabc.jpg);
+	background-position: center; height: 500px; color: white;
+
+}
+
+
+.section1{margin-top: -150px; margin-bottom: 60px;}
+
+.section1 .card{margin: 10px 20px; box-shadow: 0 0 10px gray; padding: 10px }
+
+.section1 .card img{ height: 333px}
+
+.section2{ background-color: lightblue}
+
+.section2 .card{background-color: transparent; border: none}
