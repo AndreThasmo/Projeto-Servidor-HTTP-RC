@@ -69,7 +69,7 @@ while True:
 
                 response = f"HTTP/1.1 200 OK\nContent-Type: {content_type}\n\n".encode() + content
             except FileNotFoundError:
-                response = "HTTP/1.1 404 NOT FOUND\n\n<h1>ERROR 404!<br>File Not Found!</h1>"
+                response = "HTTP/1.1 404 NOT FOUND\n\n<h1>ERROR 404!<br>File Not Found!</h1>".encode()
         elif method == "PUT":
             try:
                 requested_file = open("htdocs" + filename, "w")
@@ -77,13 +77,16 @@ while True:
                 requested_file.close()
                 print("| -> file content:")
                 print(headers[-1])
-                response = "HTTP/1.1 201 Created\n\n<h1>File Created!</h1>".encode()
+                response = "HTTP/1.1 201 Created\n\n<h1>File Created!</h1>"
             except FileNotFoundError:
-                response = "HTTP/1.1 404 NOT FOUND\n\n<h1>ERROR 404!<br>File Not Found!</h1>".encode()
+                response = "HTTP/1.1 404 NOT FOUND\n\n<h1>ERROR 404!<br>File Not Found!</h1>"
         else:
-            response = "HTTP/1.1 405 METHOD NOT ALLOWED\n\n<h1>ERROR 405!<br>Method Not Allowed!</h1>".encode()
+            response = "HTTP/1.1 405 METHOD NOT ALLOWED\n\n<h1>ERROR 405!<br>Method Not Allowed!</h1>"
 
-        client_connection.sendall(response)
+        if method == "GET":
+            client_connection.sendall(response)
+        else:
+            client_connection.sendall(response.encode())
 
         client_connection.close()
         print("| -> Conexão Fechada!")
