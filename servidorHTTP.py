@@ -77,8 +77,8 @@ while True:
                 requested_file.close()
                 print("| -> file content:")
                 print(headers[-1])
+                response = "HTTP/1.1 201 Created\n\n<h1>File Created!</h1>".encode()
             except FileNotFoundError:
-                response = f"HTTP/1.1 201 Created\n\n<h1>File Created!</h1>".encode()
                 response = "HTTP/1.1 404 NOT FOUND\n\n<h1>ERROR 404!<br>File Not Found!</h1>".encode()
         else:
             response = "HTTP/1.1 405 METHOD NOT ALLOWED\n\n<h1>ERROR 405!<br>Method Not Allowed!</h1>".encode()
