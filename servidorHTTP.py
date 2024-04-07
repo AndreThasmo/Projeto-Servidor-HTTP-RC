@@ -12,6 +12,24 @@ server_socket.bind((SERVER_HOST, SERVER_PORT))
 
 server_socket.listen(1)
 
+def handle_content_type(filename):
+    file_extension = filename.split('.')[1]
+
+    if file_extension == "html":
+        return "text/html"
+    elif file_extension == "css":
+        return "text/css"
+    elif file_extension == "js":
+        return "text/javascript"
+    elif file_extension == "jpg" or file_extension == "jpeg":
+        return "image/jpeg"
+    elif file_extension == "png":
+        return "image/png"
+    elif file_extension == "gif":
+        return "image/gif"
+    else:
+        return "application/octet-stream"
+
 print("+-----------------------------------------------------------------+")
 print("| Servidor em execução...")
 print("| Escutando por conexões na porta %s" % SERVER_PORT)
@@ -43,11 +61,13 @@ while True:
 
 
             try:
-                requested_file = open("htdocs" + filename)
+                requested_file = open("htdocs" + filename, "rb")
                 content = requested_file.read()
                 requested_file.close()
 
-                response = "HTTP/1.1 200 OK\n\n" + content
+                content_type = handle_content_type(filename)
+
+                response = f"HTTP/1.1 200 OK\nContent-Type: {content_type}\n\n".encode() + content
             except FileNotFoundError:
                 response = "HTTP/1.1 404 NOT FOUND\n\n<h1>ERROR 404!<br>File Not Found!</h1>"
         elif method == "PUT":
@@ -57,18 +77,16 @@ while True:
                 requested_file.close()
                 print("| -> file content:")
                 print(headers[-1])
-                response = "HTTP/1.1 201 Created\n\n<h1>File Created!</h1>"
             except FileNotFoundError:
-                response = "HTTP/1.1 404 NOT FOUND\n\n<h1>ERROR 404!<br>File Not Found!</h1>"
+                response = f"HTTP/1.1 201 Created\n\n<h1>File Created!</h1>".encode()
+                response = "HTTP/1.1 404 NOT FOUND\n\n<h1>ERROR 404!<br>File Not Found!</h1>".encode()
         else:
-            response = "HTTP/1.1 405 METHOD NOT ALLOWED\n\n<h1>ERROR 405!<br>Method Not Allowed!</h1>"
+            response = "HTTP/1.1 405 METHOD NOT ALLOWED\n\n<h1>ERROR 405!<br>Method Not Allowed!</h1>".encode()
 
-
-        #envia a resposta HTTP
-        client_connection.sendall(response.encode())
+        client_connection.sendall(response)
 
         client_connection.close()
-        print("| -> Connection closed!")
+        print("| -> Conexão Fechada!")
         print("+-----------------------------------------------------------------+")
 
 server_socket.close()
